@@ -358,12 +358,22 @@ function buildScene() {
 // ── Random flower assignment ───────────────────────────────────────────────
 function assignFlowers() {
   const activeBees = bees.filter(b => !b.excluded);
-  const idxs = activeBees.map((_, i) => i);
-  for (let i = idxs.length - 1; i > 0; i--) {
+  const fikaIdx = flowers.findIndex(f => f.isFika);
+  const nonFikaIdxs = flowers.map((_, i) => i).filter(i => i !== fikaIdx);
+
+  // Shuffle non-Fika indices and take M-1 of them, then add the Fika index
+  for (let i = nonFikaIdxs.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+    [nonFikaIdxs[i], nonFikaIdxs[j]] = [nonFikaIdxs[j], nonFikaIdxs[i]];
   }
-  activeBees.forEach((b, i) => b.flowerIdx = idxs[i]);
+  const selected = [...nonFikaIdxs.slice(0, activeBees.length - 1), fikaIdx];
+
+  // Shuffle the final selection before assigning
+  for (let i = selected.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [selected[i], selected[j]] = [selected[j], selected[i]];
+  }
+  activeBees.forEach((b, i) => b.flowerIdx = selected[i]);
 }
 
 // ── Audio ──────────────────────────────────────────────────────────────────
