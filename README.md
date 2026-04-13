@@ -50,6 +50,10 @@ Edit `_data/people.yml`. One name per line, prefixed with `- `:
 
 Save and push. The page rebuilds automatically. The number of bees and flowers always matches the number of names. The Fika flower is always the centre one.
 
+### Excluding people from a week's draw
+
+Before launching, click any bee to hide it from the current draw. Hidden bees are removed from the randomisation — the remaining bees will spread across a random subset of the flowers, with the winner guaranteed to land on the Fika flower. Click "Try again" (or refresh) to restore all bees.
+
 ---
 
 ## Tweaking the experience
