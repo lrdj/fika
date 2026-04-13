@@ -115,6 +115,18 @@ layout: null
       line-height: 1.4;
     }
 
+    .bee.idle {
+      animation: idlefloat var(--float-dur, 2.2s) ease-in-out infinite;
+      animation-delay: var(--float-delay, 0s);
+    }
+
+    @keyframes idlefloat {
+      0%   { transform: translate(-50%, -50%) translateY(0px)   rotate(0deg); }
+      30%  { transform: translate(-50%, -50%) translateY(-5px)  rotate(3deg); }
+      70%  { transform: translate(-50%, -50%) translateY(4px)   rotate(-3deg); }
+      100% { transform: translate(-50%, -50%) translateY(0px)   rotate(0deg); }
+    }
+
     .bee.buzzing {
       animation: beewobble 0.18s ease-in-out infinite alternate;
     }
@@ -298,7 +310,7 @@ function buildScene() {
 
   // Flower sizing — responsive
   const stemH = Math.max(40, Math.min(gH * 0.72, 100));
-  const fikaStemH = stemH * 1.1;
+  const fikaStemH = stemH * 1.2;
   const beeSize = Math.round(Math.min(Math.max(26, w / (n * 1.6 + 3)), 46));
 
   for (let i = 0; i < n; i++) {
@@ -322,13 +334,15 @@ function buildScene() {
     scene.appendChild(fDiv);
     flowers.push({ x, petalTopVP, isFika });
 
-    // Bee — stagger starting heights so they're not all in a row
-    const bx = spacing * (i + 1);
-    const by = sh * 0.1 + (sh * 0.6) * (i / Math.max(n - 1, 1));
+    // Bee — random scatter in upper sky
+    const bx = 60 + Math.random() * (w - 120);
+    const by = sh * 0.06 + Math.random() * (sh * 0.42);
     const bDiv = document.createElement('div');
-    bDiv.className = 'bee';
+    bDiv.className = 'bee idle';
     bDiv.style.left = bx + 'px';
     bDiv.style.top = by + 'px';
+    bDiv.style.setProperty('--float-dur', (1.7 + Math.random() * 1.4) + 's');
+    bDiv.style.setProperty('--float-delay', (-Math.random() * 2.5) + 's');
     bDiv.innerHTML = beeSVG(beeSize) + `<div class="bee-label">${PEOPLE[i]}</div>`;
     scene.appendChild(bDiv);
     bees.push({ el: bDiv, x: bx, y: by, vx: 0, vy: 0, flowerIdx: null });
@@ -466,6 +480,7 @@ function launchBees() {
 
   assignFlowers();
   document.getElementById('ui').style.display = 'none';
+  bees.forEach(b => b.el.classList.remove('idle'));
 
   startBuzz();
   startBuzzMove();
