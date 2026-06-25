@@ -12,6 +12,11 @@ A cheerful randomiser for deciding who hosts Fika next week. Bees hover in the s
 - Git installed locally
 - Ruby + Jekyll installed (`gem install jekyll bundler`) — only needed for local preview
 
+### Running online
+
+The service is currently being served by Github Pages (push to Main branch and hosted app updates automatically) at https://lrdj.github.io/fika/.
+To move it to a GDS repo, copy or fork the repo (it is public) and push to the appropriate repo. Pages settings are in "Settings" from the main repo view.
+
 ### Running locally
 
 ```bash
